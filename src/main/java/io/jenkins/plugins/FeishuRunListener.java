@@ -20,7 +20,9 @@ public class FeishuRunListener extends RunListener<AbstractBuild<?, ?>> {
   public void onStarted(AbstractBuild<?, ?> run, TaskListener listener) {
     Job<?, ?> job = run.getParent();
     FeishuJobProperty property = job.getProperty(FeishuJobProperty.class);
-
+    if (property == null) {
+      return;
+    }
     FeishuService service = new FeishuServiceImpl(property.getSendUrlList(), listener, run);
     service.sendMsg(service.buildFeishuMsg());
   }
@@ -29,6 +31,9 @@ public class FeishuRunListener extends RunListener<AbstractBuild<?, ?>> {
   public void onCompleted(AbstractBuild<?, ?> run, @NonNull TaskListener listener) {
     Job<?, ?> job = run.getParent();
     FeishuJobProperty property = job.getProperty(FeishuJobProperty.class);
+    if (property == null) {
+      return;
+    }
     FeishuService service = new FeishuServiceImpl(property.getSendUrlList(), listener, run);
     service.sendMsg(service.buildFeishuMsg());
   }
